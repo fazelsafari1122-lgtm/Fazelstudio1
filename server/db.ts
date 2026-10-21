@@ -401,7 +401,11 @@ function seedInitialData() {
   db.exec('PRAGMA foreign_keys = OFF;');
 
   try {
-    const adminPass = hashPassword('1');
+    const initialAdminPassword = process.env.INITIAL_ADMIN_PASSWORD;
+if (!initialAdminPassword) {
+  throw new Error('INITIAL_ADMIN_PASSWORD must be set when initializing an empty database');
+}
+const adminPass = hashPassword(initialAdminPassword);
     db.prepare(`
       INSERT INTO users (username, password_hash, full_name, role, phone, email)
       VALUES (?, ?, ?, ?, ?, ?)
