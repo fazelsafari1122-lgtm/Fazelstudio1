@@ -1,0 +1,8 @@
+{
+  "name": "Remix STUDIO WED",
+  "description": "سامانه جامع مدیریت هوشمند آتلیه، عروس و داماد، قراردادها، تجهیزات، حسابداری و پروژه های استودیو عروسی",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
